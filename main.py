@@ -36,8 +36,8 @@ class hCaptcha:
 
 
     def Upload(self, path):
-        imageupload = requests.post('https://flii.gq/verdictswag/upload.php', data={"image": open(path, 'rb').read()})
-        return f'https://flii.gq/verdictswag/i/{imageupload.text}'
+        imageupload = requests.post('https://PRIVATE-IMAGE-UPLOADER', data={"image": open(path, 'rb').read()})
+        return f'https://RIVATE-IMAGE-UPLOADER/i/{imageupload.text}'
 
 
     def ReverseImage(self, link, word, lenamount):
