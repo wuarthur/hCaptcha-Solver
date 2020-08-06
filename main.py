@@ -50,8 +50,8 @@ class hCaptcha:
                 else:
                     print(f' [!] Image {str((lenamount-9)*-1)} is incorrect.')
                     break
-            except Exception as e:
-                print(e)
+            except:
+                pass
 
     def start(self):
         proxy.new_har(options={'captureContent': True})
