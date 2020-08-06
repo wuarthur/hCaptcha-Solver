@@ -7,7 +7,7 @@ Credit to <a href="https://discord.com/users/568577678140112900">Boic</a> cuz he
 
 # How it works:
 
-![Screenshot](cmd_6snicOamnT.png)
+![Screenshot](screenshot.png)
 
 This captcha solver uses wolfram image identifier to identify what the image is.
 
