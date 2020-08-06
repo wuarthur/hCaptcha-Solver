@@ -7,6 +7,6 @@ Credit to <a href="https://github.com/FliiGQ">FliiGQ</a> because he made a custo
 
 ![Screenshot](cmd_6snicOamnT.png)
 
-This captcha solver uses yandex reverse image search to identify what the image is. If Yandex's result matches the captcha item, it selects it.
+This captcha solver uses wolfram image identifier to identify what the image is.
 
 This is just a proof of concept and I know its not the best way of bypassing hCaptcha by far.
