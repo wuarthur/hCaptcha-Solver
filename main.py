@@ -1,23 +1,16 @@
 import requests
-import random
 import time
 import json
 import threading
-import os
-import multiprocessing
 from selenium import webdriver
 from browsermobproxy import Server
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from googletrans import Translator
+from PyDictionary import PyDictionary 
 
 ### CONFIG ###
-proxies = open('proxies.txt', 'r').read().splitlines()
-
-yandex_timeout = 5
-
 server = Server('browsermob-proxy-2.1.4\\bin\\browsermob-proxy.bat')
 server.start()
 
@@ -34,61 +27,23 @@ class hCaptcha:
     def __init__(self):
         self.driver = webdriver.Chrome('chromedriver.exe', options=chrome_options)
 
+    def ReverseImage(self, img, word, lenamount):
+        identifier = requests.post('https://www.imageidentify.com/objects/user-26a7681f-4b48-4f71-8f9f-93030898d70d/prd/urlapi', data={'image': img})
+        dictionary=PyDictionary()
+        if word == "motorbus": word = "bus"
+        syns = dictionary.synonym(word)
 
-    def Upload(self, path):
-        imageupload = requests.post('https://PRIVATE-IMAGE-UPLOADER', data={"image": open(path, 'rb').read()})
-        return f'https://PRIVATE-IMAGE-UPLOADER/i/{imageupload.text}'
-
-
-    def ReverseImage(self, link, word, lenamount):
-        yandexproxy  =  random.choice(proxies)
-        try: proxies.remove(yandexproxy)
-        except: pass
-
-        proxydict = {
-            'https': f'https://{yandexproxy}'
-        }
-
-        yandexresults = requests.get(f'https://yandex.com/images/search?url={link}&rpt=imageview', headers={
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.'
-            '4147.105 Safari/537.36'
-        }, proxies=proxydict, timeout=yandex_timeout)
-
-        htmlhandle = 'class="Button2 Button2_width_auto Button2_view_default Button2_size_l Button2_type_link Button2_to'
-        'ne_gray Tags-Item"><span class="Button2-Text">'
-
-        if 'showcaptcha' in yandexresults.url:
-            self.ReverseImage(link, word, lenamount)
-
-        for i in range(yandexresults.text.count(htmlhandle)):
-            translator = Translator()
-            translated = translator.translate(yandexresults.text.split(htmlhandle)[i + 1].split('</')[0], dest='en').text
-            if word in translated or translated in word:
+        for syn in syns:
+            if syn in identifier.json()['identify']['title'] or word in identifier.json()['identify']['title'] or identifier.json()['identify']['title'] in word or identifier.json()['identify']['title'] in syn:
+                return True
+            if syn in identifier.json()['identify']['alternatives'] or word in identifier.json()['identify']['alternatives']:
                 return True
         return False
 
-
     def HandleReverseImg(self, img, lenamount, word):
-        filename = ''.join(random.choice('qwertyuiopasdfghjklzxcvbnm') for _ in range(7))
-        r = requests.get(img, stream=True)
-        ftype = r.headers['content-type'].split('/')[1]
-        if ';' in ftype:
-            ftype = ftype.split(';')[0]
-
-        f = open(f"images\\{filename}.{ftype}", 'wb')
-        for chunk in r.raw:
-            f.write(chunk)
-
         while True:
             try:
-                link = self.Upload(f"images\\{filename}.{ftype}")
-                break
-            except:
-                pass
-
-        while True:
-            try:
-                if self.ReverseImage(link, word, lenamount):
+                if self.ReverseImage(img, word, lenamount):
                     print(f' [!] Image {str((lenamount-9)*-1)} is correct.')
                     self.driver.find_elements_by_css_selector("div[class='task-image']")[int((lenamount-9)*-1)].click()
                     break
@@ -96,7 +51,7 @@ class hCaptcha:
                     print(f' [!] Image {str((lenamount-9)*-1)} is incorrect.')
                     break
             except Exception as e:
-                pass
+                print(e)
 
     def start(self):
         proxy.new_har(options={'captureContent': True})
