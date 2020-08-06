@@ -2,6 +2,7 @@
 DONE - Has successfully solved captcha around 3 times in testing. Working on making it faster so it doesn't expire.
 
 Credit to <a href="https://github.com/FliiGQ">FliiGQ</a> because he made a custom uploader just for this project
+
 Credit to Boic cuz he helped a ton with the wolfram identifier.
 
 # How it works:
