@@ -3,7 +3,7 @@ DONE - Has successfully solved captcha around 3 times in testing. Working on mak
 
 Credit to <a href="https://github.com/FliiGQ">FliiGQ</a> because he made a custom uploader just for this project
 
-Credit to Boic cuz he helped a ton with the wolfram identifier.
+Credit to <a href="https://discord.com/users/568577678140112900">Boic</a> cuz he helped a ton with the wolfram identifier.
 
 # How it works:
 
